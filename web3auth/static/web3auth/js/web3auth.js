@@ -9,16 +9,16 @@ web3auth = {
 			throw err;
 		    }
 		    if (accounts.length == 0) {
-			$('[data-web3auth-display').hide();
+			$('[data-web3auth-display]').hide();
 			$('[data-web3auth-display="wallet-locked"]').show();
 		    } else {
-			$('[data-web3auth-display').hide();
+			$('[data-web3auth-display]').hide();
 			$('[data-web3auth-display="wallet-available"]').show();
 		    }
 		    
 		});
 	    } else {
-		$('[data-web3auth-display').hide();
+		$('[data-web3auth-display]').hide();
 		$('[data-web3auth-display="wallet-unavailable"]').show();
 	    }
 	    
@@ -47,4 +47,4 @@ web3auth = {
 	});
 
     }
-}
+};

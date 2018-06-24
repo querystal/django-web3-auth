@@ -8,11 +8,6 @@ from django.conf import settings
 from web3auth.forms import LoginForm, SignupForm
 from web3auth.utils import recover_to_addr
 
-def demo(request):
-    return render(request,
-                  'web3auth/demo.html',
-                  {})
-                  
 
 def login_view(request, template_name='web3auth/login.html'):
     if request.method == 'POST':

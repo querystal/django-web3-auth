@@ -6,7 +6,7 @@ django-web3-auth is a pluggable Django app that enables login/signup via an Ethe
 
 django-web3-auth has no releases yet, you'll need to install it from repository:
 ```bash
-pip install https://github.com/atereshkin/django-web3-auth/archive/master.zip
+pip install https://github.com/Bearle/django-web3-auth/archive/master.zip
 ```
 
 You will also need [Web3.js](https://github.com/ethereum/web3.js) included in your pages.
