@@ -12,13 +12,10 @@ class Web3Backend(backends.ModelBackend):
             return None
         else:
             # get address field for the user model
-            try:
                 address_field = app_settings.WEB3AUTH_USER_ADDRESS_FIELD
                 kwargs = {
-                    address_field: address
+                    address_field+"__iexact": address
                 }
                 # try to get user with provided data
-                user = User.objects.get(**kwargs)
+                user = User.objects.filter(**kwargs).first()
                 return user
-            except User.DoesNotExist:
-                return None

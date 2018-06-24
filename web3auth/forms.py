@@ -5,7 +5,6 @@ from django.contrib.auth import authenticate, get_user_model
 
 from django.utils.translation import ugettext_lazy as _
 from web3auth.settings import app_settings
-from django.conf import settings
 from .utils import validate_eth_address
 
 
@@ -45,7 +44,7 @@ class SignupForm(forms.ModelForm):
         return self.cleaned_data[app_settings.WEB3AUTH_USER_ADDRESS_FIELD].lower()
 
     class Meta:
-        model = settings.AUTH_USER_MODEL
+        model = get_user_model()
         fields = signup_fields
 
 
