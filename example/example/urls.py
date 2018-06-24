@@ -15,10 +15,26 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.views.generic import TemplateView
+from django.shortcuts import render, redirect
+
+
+def login(request):
+    if not request.user.is_authenticated:
+        return render(request, 'web3auth/login.html')
+    else:
+        return redirect('/admin/login')
+
+
+def auto_login(request):
+    if not request.user.is_authenticated:
+        return render(request, 'web3auth/autologin.html')
+    else:
+        return redirect('/admin/login')
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^login/', TemplateView.as_view(template_name='web3auth/login.html')),
+    url(r'^login/', login),
+    url(r'^auto_login/', auto_login),
     url(r'', include('web3auth.urls')),
 ]

@@ -73,6 +73,8 @@ Things to cover in docs
 9. Example project
 
 - how to deal with passwords (which are not set during signup)
+- why do user has to sign a message (opposed to myetherwallet & other dapps)
+
 
 
 Running Tests
