@@ -1,20 +1,25 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, backends
 
 from web3auth.utils import recover_to_addr
+from django.conf import settings
 
 
-class Web3Backend:
-    def authenticate(self, request, token=None, signature=None):
+class Web3Backend(backends.ModelBackend):
+    def authenticate(self, request, address=None, token=None, signature=None):
+        # get user model
         User = get_user_model()
-        try:
-            addr = recover_to_addr(token, signature)
-            return User.objects.get(username=addr)
-        except User.DoesNotExist:
+        # check if the address the user has provided matches the signature
+        if not address == recover_to_addr(token, signature):
             return None
-
-    def get_user(self, user_id):
-        User = get_user_model()
-        try:
-            return User.objects.get(pk=user_id)
-        except User.DoesNotExist:
-            return None
+        else:
+            # get address field for the user model
+            try:
+                address_field = getattr(settings, 'WEB3AUTH_USER_ADDRESS_FIELD', 'username')
+                kwargs = {
+                    address_field: address
+                }
+                # try to get user with provided data
+                user = User.objects.get(**kwargs)
+                return user
+            except User.DoesNotExist:
+                return None

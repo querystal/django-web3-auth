@@ -42,16 +42,24 @@ INSTALLED_APPS = [
     # they should be added here
 ]
 
-MIDDLEWARE_CLASSES = [
+l = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+from django import get_version
+from packaging import version
+
+if version.parse(get_version()) < version.parse("1.10"):
+    MIDDLEWARE_CLASSES = l
+    MIDDLEWARE_CLASSES += ['django.contrib.auth.middleware.SessionAuthenticationMiddleware', ]
+else:
+    MIDDLEWARE = l
 
 ROOT_URLCONF = 'example.urls'
 
@@ -101,6 +109,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'web3auth.backend.Web3Backend'
+]
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
