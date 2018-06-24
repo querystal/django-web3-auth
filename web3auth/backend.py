@@ -1,8 +1,7 @@
 from django.contrib.auth import get_user_model, backends
 
 from web3auth.utils import recover_to_addr
-from django.conf import settings
-
+from web3auth.settings import app_settings
 
 class Web3Backend(backends.ModelBackend):
     def authenticate(self, request, address=None, token=None, signature=None):
@@ -14,7 +13,7 @@ class Web3Backend(backends.ModelBackend):
         else:
             # get address field for the user model
             try:
-                address_field = getattr(settings, 'WEB3AUTH_USER_ADDRESS_FIELD', 'username')
+                address_field = app_settings.WEB3AUTH_USER_ADDRESS_FIELD
                 kwargs = {
                     address_field: address
                 }

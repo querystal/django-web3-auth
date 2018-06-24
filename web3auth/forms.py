@@ -2,10 +2,9 @@ import string
 
 from django import forms
 from django.contrib.auth import authenticate, get_user_model
-from django.conf import settings
-from web3auth.utils import recover_to_addr
 from eth_utils import is_hex_address
 from django.utils.translation import ugettext_lazy as _
+from web3auth.settings import app_settings
 
 
 def validate_eth_address(value):
@@ -32,7 +31,29 @@ class LoginForm(forms.Form):
         return sig
 
 
+# list(set()) here is to eliminate the possibility of double including the address field
+signup_fields = list(set(app_settings.WEB3AUTH_USER_SIGNUP_FIELDS + [app_settings.WEB3AUTH_USER_ADDRESS_FIELD]))
+
+
 class SignupForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        # first call parent's constructor
+        super().__init__(*args, **kwargs)
+
+        # make sure to make email required, because password is not set
+        # and if the user loses private key he can get 'reset' password link to email
+        if 'email' in app_settings.WEB3AUTH_USER_SIGNUP_FIELDS:
+            self.fields['email'].required = True
+
+    def clean_address_field(self):
+        validate_eth_address(self.cleaned_data[app_settings.WEB3AUTH_USER_ADDRESS_FIELD])
+        return self.cleaned_data[app_settings.WEB3AUTH_USER_ADDRESS_FIELD].lower()
+
     class Meta:
         model = get_user_model()
-        fields = getattr(settings, "WEB3AUTH_USER_SIGNUP_FIELDS", ['email'])
+        fields = signup_fields
+
+
+# hack to set the method for cleaning address field
+setattr(SignupForm, 'clean_' + app_settings.WEB3AUTH_USER_ADDRESS_FIELD, SignupForm.clean_address_field)

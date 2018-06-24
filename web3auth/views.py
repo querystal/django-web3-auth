@@ -9,8 +9,9 @@ from django.http import JsonResponse, HttpResponseBadRequest
 from web3auth.forms import LoginForm, SignupForm
 from web3auth.utils import recover_to_addr
 from django.utils.translation import ugettext_lazy as _
+from web3auth.settings import app_settings
 
-
+import json
 @require_http_methods(["GET", "POST"])
 def login_api(request):
     if request.method == 'GET':
@@ -31,12 +32,30 @@ def login_api(request):
                 user = authenticate(request, token=token, address=address, signature=signature)
                 if user:
                     login(request, user, 'web3auth.backend.Web3Backend')
-                    return JsonResponse({'success': True})
+                    redirect_url = request.GET.get('next') or request.POST.get('next') or settings.LOGIN_REDIRECT_URL
+                    return JsonResponse({'success': True, 'redirect_url': redirect_url})
                 else:
-                    error = _("Can't find a user for the provided signature with address {address}").format(address=address)
+                    error = _("Can't find a user for the provided signature with address {address}").format(
+                        address=address)
                     return JsonResponse({'success': False, 'error': error})
             else:
-                return JsonResponse({'success': False, 'error': form.errors.as_json()})
+                return JsonResponse({'success': False, 'error': json.loads(form.errors.as_json())})
+
+@require_http_methods(["POST"])
+def signup_api(request):
+    if not app_settings.WEB3AUTH_SIGNUP_ENABLED:
+        return JsonResponse({'success': False, 'error': _("Sorry, signup's are currently disabled")})
+    form = SignupForm(request.POST)
+    if form.is_valid():
+        user = form.save(commit=False)
+        addr_field = app_settings.WEB3AUTH_USER_ADDRESS_FIELD
+        setattr(user, addr_field, form.cleaned_data[addr_field])
+        user.save()
+        login(request, user, 'web3auth.backend.Web3Backend')
+        redirect_url = request.GET.get('next') or request.POST.get('next') or settings.LOGIN_REDIRECT_URL
+        return JsonResponse({'success': True, 'redirect_url': redirect_url})
+    else:
+        return JsonResponse({'success': False, 'error': json.loads(form.errors.as_json())})
 
 
 def login_view(request, template_name='web3auth/login.html'):

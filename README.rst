@@ -60,6 +60,21 @@ Features
 
 * TODO
 
+Things to cover in docs
+-----------------------
+1. Installation
+2. Overview of the login/signup process
+3. Quickstart
+4. Configuration
+5. API signup/login
+6. Forms & views, normal signup login
+7. Usage with allauth, allauth-2fa
+8. Supported web3 providers
+9. Example project
+
+- how to deal with passwords (which are not set during signup)
+
+
 Running Tests
 -------------
 
