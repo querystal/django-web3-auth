@@ -16,7 +16,7 @@ def login_view(request, template_name='web3auth/login.html'):
         if form.is_valid():
             if form.user is not None:
                 del request.session['login_token']
-                login(request, form.user)                
+                login(request, form.user)
                 return redirect(request.GET.get('next') or request.POST.get('next') or settings.LOGIN_REDIRECT_URL)
             else:
                 request.session['ethereum_address'] = recover_to_addr(token, form.cleaned_data['signature'])
@@ -27,24 +27,23 @@ def login_view(request, template_name='web3auth/login.html'):
         form = LoginForm(token)
     return render(request,
                   template_name,
-                  {'form' : form,
-                   'login_token' : token})
+                  {'form': form,
+                   'login_token': token})
 
 
 def signup_view(request, template_name='web3auth/signup.html'):
-    ethereum_address = request.session['ethereum_address']
-    if request.method == 'POST':        
+    if request.method == 'POST':
+        ethereum_address = request.session['ethereum_address']
         form = SignupForm(request.POST)
         if form.is_valid():
             del request.session['ethereum_address']
             user = form.save(commit=False)
             user.username = ethereum_address
-            user.save()            
-            login(request, user)                
+            user.save()
+            login(request, user)
             return redirect(request.GET.get('next') or request.POST.get('next') or settings.LOGIN_REDIRECT_URL)
     else:
         form = SignupForm()
     return render(request,
                   template_name,
-                  {'form' : form})
-    
+                  {'form': form})

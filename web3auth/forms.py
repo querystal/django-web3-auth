@@ -1,8 +1,7 @@
 import string
 
 from django import forms
-from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, get_user_model
 
 
 class LoginForm(forms.Form):
@@ -25,5 +24,5 @@ class LoginForm(forms.Form):
 
 class SignupForm(forms.ModelForm):
     class Meta:
-        model = User
+        model = get_user_model()
         fields = ('email',)
