@@ -2,17 +2,11 @@ import string
 
 from django import forms
 from django.contrib.auth import authenticate, get_user_model
-from eth_utils import is_hex_address
+
 from django.utils.translation import ugettext_lazy as _
 from web3auth.settings import app_settings
-
-
-def validate_eth_address(value):
-    if not is_hex_address(value):
-        raise forms.ValidationError(
-            _('%(value)s is not a valid Ethereum address'),
-            params={'value': value},
-        )
+from django.conf import settings
+from .utils import validate_eth_address
 
 
 class LoginForm(forms.Form):
@@ -51,7 +45,7 @@ class SignupForm(forms.ModelForm):
         return self.cleaned_data[app_settings.WEB3AUTH_USER_ADDRESS_FIELD].lower()
 
     class Meta:
-        model = get_user_model()
+        model = settings.AUTH_USER_MODEL
         fields = signup_fields
 
 

@@ -1,7 +1,7 @@
 import sha3
 import ethereum
-
-
+from eth_utils import is_hex_address
+from django import forms
 def sig_to_vrs(sig):
     #    sig_bytes = bytes.fromhex(sig[2:])
     r = int(sig[2:66], 16)
@@ -19,3 +19,10 @@ def recover_to_addr(msg, sig):
     msghash = hash_personal_message(msg)
     vrs = sig_to_vrs(sig)
     return '0x' + sha3.keccak_256(ethereum.utils.ecrecover_to_pub(msghash, *vrs)).hexdigest()[24:]
+
+def validate_eth_address(value):
+    if not is_hex_address(value):
+        raise forms.ValidationError(
+            _('%(value)s is not a valid Ethereum address'),
+            params={'value': value},
+        )
