@@ -1,0 +1,4 @@
+
+# Additional requirements go here
+ethereum==2.3.1
+rlp==0.6.0
