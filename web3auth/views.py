@@ -1,7 +1,8 @@
 import random
 import string
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
+from django.urls.exceptions import NoReverseMatch
 from django.contrib.auth import login, authenticate
 from django.conf import settings
 from django.views.decorators.http import require_http_methods
@@ -13,6 +14,18 @@ from web3auth.settings import app_settings
 
 import json
 
+
+def get_redirect_url(request):
+    if request.GET.get('next'):
+        return request.GET.get('next')
+    elif request.POST.get('next'):
+        return request.POST.get('next')
+    elif settings.LOGIN_REDIRECT_URL:
+        try:
+            url = reverse(settings.LOGIN_REDIRECT_URL)
+        except NoReverseMatch:
+            url = settings.LOGIN_REDIRECT_URL
+        return url
 
 @require_http_methods(["GET", "POST"])
 def login_api(request):
@@ -34,8 +47,8 @@ def login_api(request):
                 user = authenticate(request, token=token, address=address, signature=signature)
                 if user:
                     login(request, user, 'web3auth.backend.Web3Backend')
-                    redirect_url = request.GET.get('next') or request.POST.get('next') or settings.LOGIN_REDIRECT_URL
-                    return JsonResponse({'success': True, 'redirect_url': redirect_url})
+
+                    return JsonResponse({'success': True, 'redirect_url': get_redirect_url(request)})
                 else:
                     error = _("Can't find a user for the provided signature with address {address}").format(
                         address=address)
@@ -55,8 +68,7 @@ def signup_api(request):
         setattr(user, addr_field, form.cleaned_data[addr_field])
         user.save()
         login(request, user, 'web3auth.backend.Web3Backend')
-        redirect_url = request.GET.get('next') or request.POST.get('next') or settings.LOGIN_REDIRECT_URL
-        return JsonResponse({'success': True, 'redirect_url': redirect_url})
+        return JsonResponse({'success': True, 'redirect_url': get_redirect_url(request)})
     else:
         return JsonResponse({'success': False, 'error': json.loads(form.errors.as_json())})
 
@@ -75,7 +87,7 @@ def signup_view(request, template_name='web3auth/signup.html'):
                 setattr(user, addr_field, form.cleaned_data[addr_field])
                 user.save()
                 login(request, user, 'web3auth.backend.Web3Backend')
-                return redirect(request.GET.get('next') or request.POST.get('next') or settings.LOGIN_REDIRECT_URL)
+                return redirect(get_redirect_url(request))
     return render(request,
                   template_name,
                   {'form': form})
