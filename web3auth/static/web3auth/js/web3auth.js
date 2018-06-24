@@ -14,9 +14,9 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function loginWithSignature(address, signature, onLoginRequestError, onLoginFail, onLoginSuccess) {
+function loginWithSignature(address, signature, login_url, onLoginRequestError, onLoginFail, onLoginSuccess) {
     var request = new XMLHttpRequest();
-    request.open('POST', '/login_api/', true);
+    request.open('POST', login_url, true);
     request.onload = function () {
         if (request.status >= 200 && request.status < 400) {
             // Success!
@@ -61,7 +61,7 @@ function checkWeb3(callback) {
     });
 }
 
-function web3Login(onTokenRequestFail, onTokenSignFail, onTokenSignSuccess, // used in this function
+function web3Login(login_url, onTokenRequestFail, onTokenSignFail, onTokenSignSuccess, // used in this function
                    onLoginRequestError, onLoginFail, onLoginSuccess) {
     // used in loginWithSignature
 
@@ -74,7 +74,7 @@ function web3Login(onTokenRequestFail, onTokenSignFail, onTokenSignSuccess, // u
 
 
     var request = new XMLHttpRequest();
-    request.open('GET', '/login_api/', true);
+    request.open('GET', login_url, true);
 
     request.onload = function () {
         if (request.status >= 200 && request.status < 400) {
@@ -95,7 +95,7 @@ function web3Login(onTokenRequestFail, onTokenSignFail, onTokenSignSuccess, // u
                     if (typeof onTokenSignSuccess == 'function') {
                         onTokenSignSuccess(result);
                     }
-                    loginWithSignature(from, result, onLoginRequestError, onLoginFail, onLoginSuccess);
+                    loginWithSignature(from, result, login_url, onLoginRequestError, onLoginFail, onLoginSuccess);
                 }
             });
 

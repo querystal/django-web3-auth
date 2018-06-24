@@ -21,7 +21,8 @@
           if (!loggedIn) {
             alert("Please unlock your web3 provider (probably, Metamask)")
           } else {
-            web3Login(console.log, console.log, console.log, console.log, console.log, function (resp) {
+            var login_url = '{% url 'web3auth_login_api' %}';
+            web3Login(login_url, console.log, console.log, console.log, console.log, console.log, function (resp) {
               window.location.replace(resp.redirect_url);
             });
           }
