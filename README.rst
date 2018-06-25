@@ -74,6 +74,7 @@ Things to cover in docs
 
 - how to deal with passwords (which are not set during signup)
 - why do user has to sign a message (opposed to myetherwallet & other dapps)
+- address_field MUST be unique (otherwise the user can login as another user)
 
 
 

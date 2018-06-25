@@ -38,6 +38,7 @@ class SignupForm(forms.ModelForm):
         # and if the user loses private key he can get 'reset' password link to email
         if 'email' in app_settings.WEB3AUTH_USER_SIGNUP_FIELDS:
             self.fields['email'].required = True
+        self.fields[app_settings.WEB3AUTH_USER_ADDRESS_FIELD].required = True
 
     def clean_address_field(self):
         validate_eth_address(self.cleaned_data[app_settings.WEB3AUTH_USER_ADDRESS_FIELD])
