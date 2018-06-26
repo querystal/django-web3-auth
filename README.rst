@@ -13,6 +13,8 @@ Django-Web3-Auth
 
 django-web3-auth is a pluggable Django app that enables login/signup via an Ethereum wallet (a la CryptoKitties). The user authenticates themselves by digitally signing the session key with their wallet's private key.
 
+.. image:: https://github.com/Bearle/django-web3-auth/blob/master/docs/_static/web3_auth_test.gif?raw=true
+
 Documentation
 -------------
 
@@ -38,9 +40,25 @@ Add it to your `INSTALLED_APPS`:
         ...
     )
 Set `'web3auth.backend.Web3Backend'` as your authentication backend:
+
 .. code-block:: python
 
-    AUTHENTICATION_BACKENDS = ['web3auth.backend.Web3Backend']
+    AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'web3auth.backend.Web3Backend'
+    ]
+Set your User model's field to use as ETH address provider:
+
+.. code-block:: python
+
+    WEB3AUTH_USER_ADDRESS_FIELD = 'username'
+
+And if you have some other fields you want to be in the SignupForm, add them too:
+
+.. code-block:: python
+
+    WEB3AUTH_USER_SIGNUP_FIELDS = ['email',]
+
 
 Add Django-Web3-Auth's URL patterns:
 
@@ -55,10 +73,47 @@ Add Django-Web3-Auth's URL patterns:
         ...
     ]
 
+Add some javascript to handle login:
+
+
+.. code-block:: html
+
+    <script src="{% static 'web3auth/js/web3auth.js' %}"></script>
+
+
+.. code-block:: javascript
+
+    function startLogin() {
+      if (typeof web3 !== 'undefined') {
+        checkWeb3(function (loggedIn) {
+          if (!loggedIn) {
+            alert("Please unlock your web3 provider (probably, Metamask)")
+          } else {
+            var login_url = '{% url 'web3auth_login_api' %}';
+            web3Login(login_url, console.log, console.log, console.log, console.log, console.log, function (resp) {
+              console.log(resp);
+              window.location.replace(resp.redirect_url);
+            });
+          }
+        });
+
+      } else {
+        alert('web3 missing');
+      }
+    }
+
+You can access signup using {% url 'web3auth_signup' %}.
 Features
 --------
 
-* TODO
+* Web3 API login, signup
+* Web3 form for signup, login
+* Checks ethereum address validity
+* Uses random token signing as proof of private key posession
+* Easy to set up and use (just one click)
+* Custom auth backend
+* VERY customizable - uses Django settings, allows for custom User model
+
 
 Things to cover in docs
 -----------------------

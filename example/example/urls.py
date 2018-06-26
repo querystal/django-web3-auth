@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.shortcuts import render, redirect
+from django.views.generic import RedirectView
 
 
 def login(request):
@@ -34,7 +35,8 @@ def auto_login(request):
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^login/', login),
-    url(r'^auto_login/', auto_login),
+    url(r'^$', RedirectView.as_view(url='/login')),
+    url(r'^login/', login, name='login'),
+    url(r'^auto_login/', auto_login, name='autologin'),
     url(r'', include('web3auth.urls')),
 ]
