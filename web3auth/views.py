@@ -75,6 +75,18 @@ def signup_api(request):
 
 @require_http_methods(["GET", "POST"])
 def signup_view(request, template_name='web3auth/signup.html'):
+    """
+    1. Creates an instance of a SignupForm.
+    2. Checks if the registration is enabled.
+    3. If the registration is closed or form has errors, returns form with errors
+    4. If the form is valid, saves the user without saving to DB
+    5. Sets the user address from the form, saves it to DB
+    6. Logins the user using web3auth.backend.Web3Backend
+    7. Redirects the user to LOGIN_REDIRECT_URL or 'next' in get or post params
+    :param request: Django request
+    :param template_name: Template to render
+    :return: rendered template with form
+    """
     form = SignupForm()
     if not app_settings.WEB3AUTH_SIGNUP_ENABLED:
         form.add_error(None, _("Sorry, signup's are currently disabled"))

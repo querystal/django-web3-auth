@@ -12,8 +12,7 @@ Contents:
    :maxdepth: 2
 
    readme
-   installation
-   usage
+   overview
    contributing
    authors
    history

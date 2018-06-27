@@ -20,6 +20,27 @@ Documentation
 
 The full documentation is at https://django-web3-auth.readthedocs.io.
 
+Example project
+---------------
+
+https://github.com/Bearle/django-web3-auth/tree/master/example
+
+You can check out our example project by cloning the repo and heading into example/ directory.
+There is a README file for you to check, also.
+
+
+Features
+--------
+
+* Web3 API login, signup
+* Web3 Django forms for signup, login
+* Checks ethereum address validity
+* Uses random token signing as proof of private key posession
+* Easy to set up and use (just one click)
+* Custom auth backend
+* VERY customizable - uses Django settings, allows for custom User model
+* Vanilla Javascript helpers included
+
 Quickstart
 ----------
 django-web3-auth has no releases yet, you'll need to install it from repository::
@@ -103,33 +124,47 @@ Add some javascript to handle login:
     }
 
 You can access signup using {% url 'web3auth_signup' %}.
-Features
---------
 
-* Web3 API login, signup
-* Web3 form for signup, login
-* Checks ethereum address validity
-* Uses random token signing as proof of private key posession
-* Easy to set up and use (just one click)
-* Custom auth backend
-* VERY customizable - uses Django settings, allows for custom User model
+If you have any questions left, head to the example app https://github.com/Bearle/django-web3-auth/tree/master/example
+
+
+
+Important details and FAQ
+-------------------------
+
+1. *If you set a custom address field (WEB3AUTH_USER_ADDRESS_FIELD), it MUST be unique (unique=True).*
+
+This is needed because if it's not, the user can register a new account with the same address as the other one,
+meaning that the user can now login as any of those accounts (sometimes being the wrong one).
+
+2. *How do i deal with user passwords or Password is not set*
+There should be some code in your project that generates a password using ``User.objects.make_random_password`` and sends it to a user email.
+Or, even better, sends them a 'restore password' link.
+Also, it's possible to copy signup_view to your project, assign it a url, and add the corresponding lines to set some password for a user.
+
+3. *Why do i have to sign a message? It's not needed in MyEtherWallet or other DApps!*
+
+The main reason is that when using a DApp, you most likely don't have an account on the website, it's accessible only with web3 (Metamask).
+When using web3 only to sign into user account, it is necessary to prove your identity with a private key (e.g. sign a random message),
+because when we have backend we can't trust any user just by his knowledge of the public address.
+Signed message proves that user possesses the private key, associated with the address.
 
 
 Things to cover in docs
 -----------------------
-1. Installation
+1. Installation - done
 2. Overview of the login/signup process
-3. Quickstart
+3. Quickstart - done
 4. Configuration
 5. API signup/login
 6. Forms & views, normal signup login
 7. Usage with allauth, allauth-2fa
 8. Supported web3 providers
-9. Example project
+9. Example project - done
 
-- how to deal with passwords (which are not set during signup)
-- why do user has to sign a message (opposed to myetherwallet & other dapps)
-- address_field MUST be unique (otherwise the user can login as another user)
+- how to deal with passwords (which are not set during signup) - done
+- why do user has to sign a message (opposed to myetherwallet & other dapps) - done
+- address_field MUST be unique (otherwise the user can login as another user) - done
 
 
 
