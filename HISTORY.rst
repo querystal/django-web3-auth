@@ -3,7 +3,7 @@
 History
 -------
 
-0.1.0 (2018-06-24)
+0.1.0 (2018-06-29)
 ++++++++++++++++++
 
-* Move to using cookiecutter-djangopackage
+* First release on PyPi

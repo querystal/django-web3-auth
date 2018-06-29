@@ -43,11 +43,7 @@ Features
 
 Quickstart
 ----------
-django-web3-auth has no releases yet, you'll need to install it from repository::
-
-    pip install https://github.com/Bearle/django-web3-auth/archive/master.zip
-
-When it becomes available on pypi, install Django-Web3-Auth with pip::
+Install Django-Web3-Auth with pip::
 
     pip install django-web3-auth
 
