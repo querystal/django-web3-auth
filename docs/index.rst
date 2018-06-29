@@ -13,6 +13,7 @@ Contents:
 
    readme
    overview
+   settings
    contributing
    authors
    history

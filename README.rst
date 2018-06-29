@@ -150,24 +150,6 @@ because when we have backend we can't trust any user just by his knowledge of th
 Signed message proves that user possesses the private key, associated with the address.
 
 
-Things to cover in docs
------------------------
-1. Installation - done
-2. Overview of the login/signup process
-3. Quickstart - done
-4. Configuration
-5. API signup/login
-6. Forms & views, normal signup login
-7. Usage with allauth, allauth-2fa
-8. Supported web3 providers
-9. Example project - done
-
-- how to deal with passwords (which are not set during signup) - done
-- why do user has to sign a message (opposed to myetherwallet & other dapps) - done
-- address_field MUST be unique (otherwise the user can login as another user) - done
-
-
-
 Running Tests
 -------------
 
