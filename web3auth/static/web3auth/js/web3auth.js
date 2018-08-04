@@ -53,7 +53,7 @@ function loginWithSignature(address, signature, login_url, onLoginRequestError, 
 }
 
 function checkWeb3(callback) {
-    web3.eth.getAccounts((err, accounts) => { // Check for wallet being locked
+    web3.eth.getAccounts(function (err, accounts) { // Check for wallet being locked
         if (err) {
             throw err;
         }
@@ -84,7 +84,7 @@ function web3Login(login_url, onTokenRequestFail, onTokenSignFail, onTokenSignSu
             console.log("Token: " + token);
             var msg = web3.toHex(token);
             var from = web3.eth.accounts[0];
-            web3.personal.sign(msg, from, (err, result) => {
+            web3.personal.sign(msg, from, function (err, result) {
                 if (err) {
                     if (typeof onTokenSignFail == 'function') {
                         onTokenSignFail(err);
