@@ -1,9 +1,9 @@
 import string
 
 from django import forms
-from django.contrib.auth import authenticate, get_user_model
-
+from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
+
 from web3auth.settings import app_settings
 from .utils import validate_eth_address
 
@@ -18,8 +18,11 @@ class LoginForm(forms.Form):
 
     def clean_signature(self):
         sig = self.cleaned_data['signature']
-        if len(sig) != 132 or (sig[130:] != '1b' and sig[130:] != '1c') or \
-            not all(c in string.hexdigits for c in sig[2:]):
+        if any([
+            len(sig) != 132,
+            sig[130:] != '1b' and sig[130:] != '1c',
+            not all(c in string.hexdigits for c in sig[2:])
+        ]):
             raise forms.ValidationError(_('Invalid signature'))
         return sig
 
