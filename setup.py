@@ -56,7 +56,7 @@ setup(
         'web3auth',
     ],
     include_package_data=True,
-    install_requires=['ethereum>=2.3.1', 'rlp==0.6.0','eth_utils>=1.0.3'],
+    install_requires=['ethereum>=2.3.1', 'rlp>=1.0.1,<2.0.0','eth_utils>=1.0.3'],
     license="MIT",
     zip_safe=False,
     keywords='django-web3-auth',
