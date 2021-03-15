@@ -3,16 +3,20 @@
 language: python
 
 python:
-  - "3.6"
+  - "3.6.12"
+  - "3.7.9"
+  - "3.8.7"
+  - "3.9.1"
 
-env: 
-  - TOX_ENV=py36-django-111
-  - TOX_ENV=py35-django-111
-  - TOX_ENV=py34-django-111
-  - TOX_ENV=py27-django-111
-  - TOX_ENV=py36-django-20
-  - TOX_ENV=py35-django-20
-  - TOX_ENV=py34-django-20
+env:
+  - TOX_ENV=django-22
+  - TOX_ENV=django-22
+  - TOX_ENV=django-22
+  - TOX_ENV=django-22
+  - TOX_ENV=django-31
+  - TOX_ENV=django-31
+  - TOX_ENV=django-31
+  - TOX_ENV=django-31
 
 matrix:
   fast_finish: true
