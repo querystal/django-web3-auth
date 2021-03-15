@@ -56,6 +56,7 @@ Add it to your `INSTALLED_APPS`:
         'web3auth.apps.Web3AuthConfig',
         ...
     )
+
 Set `'web3auth.backend.Web3Backend'` as your authentication backend:
 
 .. code-block:: python
@@ -64,6 +65,7 @@ Set `'web3auth.backend.Web3Backend'` as your authentication backend:
     'django.contrib.auth.backends.ModelBackend',
     'web3auth.backend.Web3Backend'
     ]
+
 Set your User model's field to use as ETH address provider:
 
 .. code-block:: python
