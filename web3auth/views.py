@@ -1,18 +1,17 @@
+import json
 import random
 import string
 
+from django.conf import settings
+from django.contrib.auth import login, authenticate
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse
 from django.urls.exceptions import NoReverseMatch
-from django.contrib.auth import login, authenticate
-from django.conf import settings
-from django.views.decorators.http import require_http_methods
-from django.http import JsonResponse, HttpResponseBadRequest
-from web3auth.forms import LoginForm, SignupForm
-from web3auth.utils import recover_to_addr
 from django.utils.translation import ugettext_lazy as _
-from web3auth.settings import app_settings
+from django.views.decorators.http import require_http_methods
 
-import json
+from web3auth.forms import LoginForm, SignupForm
+from web3auth.settings import app_settings
 
 
 def get_redirect_url(request):
@@ -26,6 +25,7 @@ def get_redirect_url(request):
         except NoReverseMatch:
             url = settings.LOGIN_REDIRECT_URL
         return url
+
 
 @require_http_methods(["GET", "POST"])
 def login_api(request):
