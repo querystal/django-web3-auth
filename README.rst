@@ -108,7 +108,7 @@ Add some javascript to handle login:
           if (!loggedIn) {
             alert("Please unlock your web3 provider (probably, Metamask)")
           } else {
-            var login_url = '{% url 'web3auth_login_api' %}';
+            var login_url = '{% url 'web3auth:web3auth_login_api' %}';
             web3Login(login_url, console.log, console.log, console.log, console.log, console.log, function (resp) {
               console.log(resp);
               window.location.replace(resp.redirect_url);
@@ -121,7 +121,7 @@ Add some javascript to handle login:
       }
     }
 
-You can access signup using {% url 'web3auth_signup' %}.
+You can access signup using {% url 'web3auth:web3auth_signup' %}.
 
 If you have any questions left, head to the example app https://github.com/Bearle/django-web3-auth/tree/master/example
 
