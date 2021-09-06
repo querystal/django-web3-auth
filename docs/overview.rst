@@ -15,7 +15,7 @@ Sign up
 
 The signup process is as follows (signup_view example, signup_api is similar):
 
-1. User heads to the signup URL (``{% url 'web3auth_signup' %}``)
+1. User heads to the signup URL (``{% url 'web3auth:web3auth_signup' %}``)
 2. The signup view is rendered with a ``SignupForm`` which includes ``WEB3AUTH_USER_SIGNUP_FIELDS`` and ``WEB3AUTH_USER_ADDRESS_FIELD``
 3. The user enters required data and clicks the submit button and the POST request fires to the same URL with ``signup_view``
 4. Signup view does the following:
@@ -33,7 +33,7 @@ Login
 
 The login process is as follows (login_api example):
 
-1. On some page of the website, there is Javascript which fires a GET request to the ``{% url 'web3auth_login_api' %}``
+1. On some page of the website, there is Javascript which fires a GET request to the ``{% url 'web3auth:web3auth_login_api' %}``
 2. The ``login_api`` view returns 32-char length login token
 3. Javascript on the page invites user to sign the token using web3 instance (probably Metamask)
 4. If the token is signed, the signature and address are sent ot he same ``login_api`` view
