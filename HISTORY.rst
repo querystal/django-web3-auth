@@ -1,5 +1,12 @@
 .. :changelog:
 
+0.1.5 (2021-09-06)
+++++++++++++++++++
+
+* Update from PR#5 -
+* Updated .gitignore to include missing file types
+* Added script tag to the base.html that imports web3 since MetaMask no longer auto imports (https://docs.metamask.io/guide/provider-migration.html#replacing-window-web3)
+
 History
 -------
 
