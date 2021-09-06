@@ -1,9 +1,15 @@
 .. :changelog:
+0.1.6 (2021-09-06)
+++++++++++++++++++
+
+* Update from PR#6 by @hiporox
+* Resolve's issue #4 -  Example app has missing url configuration
+
 
 0.1.5 (2021-09-06)
 ++++++++++++++++++
 
-* Update from PR#5 -
+* Update from PR#5 by @hiporox
 * Updated .gitignore to include missing file types
 * Added script tag to the base.html that imports web3 since MetaMask no longer auto imports (https://docs.metamask.io/guide/provider-migration.html#replacing-window-web3)
 
