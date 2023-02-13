@@ -157,3 +157,4 @@ dmypy.json
 -output/*/index.html
 
 -example/db.sqlite3
+.idea/

@@ -1,3 +1,5 @@
+window.web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -82,9 +84,9 @@ function web3Login(login_url, onTokenRequestFail, onTokenSignFail, onTokenSignSu
             var resp = JSON.parse(request.responseText);
             var token = resp.data;
             console.log("Token: " + token);
-            var msg = web3.toHex(token);
-            var from = web3.eth.accounts[0];
-            web3.personal.sign(msg, from, function (err, result) {
+            var msg = web3.utils.toHex(token);
+            var from = ethereum.selectedAddress;
+            web3.eth.personal.sign(msg, from, function (err, result) {
                 if (err) {
                     if (typeof onTokenSignFail == 'function') {
                         onTokenSignFail(err);
