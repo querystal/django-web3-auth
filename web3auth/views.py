@@ -7,7 +7,7 @@ from django.contrib.auth import login, authenticate
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse
 from django.urls.exceptions import NoReverseMatch
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_http_methods
 
 from web3auth.forms import LoginForm, SignupForm

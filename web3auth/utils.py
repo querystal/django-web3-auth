@@ -2,7 +2,7 @@ import sha3
 import ethereum
 from eth_utils import is_hex_address
 from django import forms
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from ethereum.utils import ecrecover_to_pub
 
 
