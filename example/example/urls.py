@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.urls import path, include
+from django.urls import re_path, path, include
 from django.contrib import admin
 from django.shortcuts import render, redirect
 from django.views.generic import RedirectView
@@ -34,9 +34,9 @@ def auto_login(request):
 
 
 urlpatterns = [
-    path(r'^admin/', admin.site.urls),
-    path(r'^$', RedirectView.as_view(url='/login')),
-    path(r'^login/', login, name='login'),
-    path(r'^auto_login/', auto_login, name='autologin'),
-    path(r'', include('web3auth.urls')),
+    path('admin', admin.site.urls),
+    path('', RedirectView.as_view(url='/login')),
+    re_path(r'^login/$', login, name='login'),
+    re_path(r'^auto_login/$', auto_login, name='autologin'),
+    path('', include('web3auth.urls')),
 ]
