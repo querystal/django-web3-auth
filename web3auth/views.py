@@ -1,4 +1,5 @@
 import json
+import logging
 import random
 import string
 
@@ -12,6 +13,8 @@ from django.views.decorators.http import require_http_methods
 
 from web3auth.forms import LoginForm, SignupForm
 from web3auth.settings import app_settings
+
+LOG = logging.getLogger(__name__)
 
 
 def get_redirect_url(request):
@@ -45,6 +48,7 @@ def login_api(request):
                 signature, address = form.cleaned_data.get("signature"), form.cleaned_data.get("address")
                 del request.session['login_token']
                 user = authenticate(request, token=token, address=address, signature=signature)
+                LOG.info("User {user} logged in".format(user=user))
                 if user:
                     login(request, user, 'web3auth.backend.Web3Backend')
 
