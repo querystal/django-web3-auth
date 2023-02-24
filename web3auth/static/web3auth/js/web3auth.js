@@ -55,7 +55,7 @@ function loginWithSignature(address, signature, login_url, onLoginRequestError, 
 }
 
 function checkWeb3(callback) {
-    web3.eth.getAccounts(function (err, accounts) { // Check for wallet being locked
+    web3.eth.requestAccounts(function (err, accounts) { // Check for wallet being locked
         if (err) {
             throw err;
         }
