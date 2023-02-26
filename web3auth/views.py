@@ -10,6 +10,7 @@ from django.shortcuts import render, redirect, reverse
 from django.urls.exceptions import NoReverseMatch
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from web3auth.forms import LoginForm, SignupForm
 from web3auth.settings import app_settings
@@ -31,6 +32,7 @@ def get_redirect_url(request):
 
 
 @require_http_methods(["GET", "POST"])
+@ensure_csrf_cookie
 def login_api(request):
     if request.method == 'GET':
         token = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for i in range(32))
