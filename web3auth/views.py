@@ -45,7 +45,7 @@ def login_api(request):
         else:
             form = LoginForm(token, request.POST)
             if form.is_valid():
-                signature, address = form.cleaned_data.get("signature"), form.cleaned_data.get("address")
+                signature, address = form.cleaned_data.get("signature"), form.cleaned_data.get("address").lower()
                 del request.session['login_token']
                 # TODO: check if the address exists in the database
                 user_model = get_user_model()
