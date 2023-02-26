@@ -31,8 +31,8 @@ def get_redirect_url(request):
         return url
 
 
-@require_http_methods(["GET", "POST"])
 @ensure_csrf_cookie
+@require_http_methods(["GET", "POST"])
 def login_api(request):
     if request.method == 'GET':
         token = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for i in range(32))
