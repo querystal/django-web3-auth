@@ -12,6 +12,7 @@ class Web3Backend(backends.ModelBackend):
     def authenticate(self, request, address=None, token=None, signature=None):
         # get user model
         User = get_user_model()
+        address = address.lower()
         # check if the address the user has provided matches the signature
         if not address == recover_to_addr(token, signature):
             LOG.info(
