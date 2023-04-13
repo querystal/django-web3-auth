@@ -1,17 +1,21 @@
 import json
+import logging
 import random
 import string
 
 from django.conf import settings
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, get_user_model
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse
 from django.urls.exceptions import NoReverseMatch
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from web3auth.forms import LoginForm, SignupForm
 from web3auth.settings import app_settings
+
+LOG = logging.getLogger(__name__)
 
 
 def get_redirect_url(request):
@@ -27,7 +31,7 @@ def get_redirect_url(request):
         return url
 
 
-@require_http_methods(["GET", "POST"])
+@ensure_csrf_cookie
 def login_api(request):
     if request.method == 'GET':
         token = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for i in range(32))
@@ -42,17 +46,21 @@ def login_api(request):
         else:
             form = LoginForm(token, request.POST)
             if form.is_valid():
-                signature, address = form.cleaned_data.get("signature"), form.cleaned_data.get("address")
+                signature, address = form.cleaned_data.get("signature"), form.cleaned_data.get("address").lower()
                 del request.session['login_token']
+                # TODO: check if the address exists in the database
+                user_model = get_user_model()
+                addr_field = app_settings.WEB3AUTH_USER_ADDRESS_FIELD
+                if not user_model.objects.filter(**{addr_field: address}).exists():
+                    user_model.objects.create_user(**{addr_field: address})
+
                 user = authenticate(request, token=token, address=address, signature=signature)
+                LOG.info("User {user} logged in".format(user=user))
                 if user:
                     login(request, user, 'web3auth.backend.Web3Backend')
-
                     return JsonResponse({'success': True, 'redirect_url': get_redirect_url(request)})
                 else:
-                    error = _("Can't find a user for the provided signature with address {address}").format(
-                        address=address)
-                    return JsonResponse({'success': False, 'error': error})
+                    return JsonResponse({'error': _("Invalid signature"), 'success': False})
             else:
                 return JsonResponse({'success': False, 'error': json.loads(form.errors.as_json())})
 
